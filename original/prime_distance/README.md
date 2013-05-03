@@ -7,12 +7,10 @@ Prime Distance
 隣接するn個の素数距離の合計が与えられた整数c以上になる最小のnはいくつですか。
 
 #制限
-<pre>
-1<a<b<c<=(1e+14)
-b-a<=(1e+7)
+1&gt;a&gt;b&gt;c&gt;=(1e+14)
+b-a&gt;=(1e+7)
 time: 2sec
 memory: 64MB
-</pre>
 
 #入出力形式
 input: a b c
