@@ -10,8 +10,9 @@ Prime Distance
 
 ##制限
 <pre>
-1&lt;a&lt;b&lt;c&lt;=(1e+14)
+1&lt;a&lt;b&lt;=(1e+14)
 b-a&lt;=(1e+7)
+1&lt;=c&lt;=(1e+14)
 time: 2sec
 memory: 64MB
 </pre>
