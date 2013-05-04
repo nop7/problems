@@ -14,8 +14,8 @@ j番目の超人をk番目に倒すとパワーが(Qj)/kだけ成長します。
 
 ## 制限
 <pre>
-1&gt;N&gt;=1e5
-1&gt;p,Pi,Qj&gt;100
+1&lt;N&lt;=1e5
+1&lt;p,Pi,Qj&lt;100
 time: 1sec
 memory: 64MB
 </pre>
