@@ -4,36 +4,39 @@
 #include <algorithm>
 #include <map>
 #include <cstdlib>
-// #include <stringstream>
-// #include <cstdio>
+#include <cstdio>
+#include <complex>
 using namespace std;
 
-#define REP(i,k,n) for( long long int i = k; i<n; i++)
+#define REP(i,n) for(ll i=0; i<n; i++)
 #define rep(n) REP(i,n)
 
-int main() {
+typedef long long unsigned int ll;
 
-    long long int a,b,c;
+const int MAXN=1e+7;
+bool is_prime1[MAXN],is_prime2[MAXN]; // [0,1,...,sqrt(b),...], [a,a+1,...,b,...]
+
+int main() {
+    ll a,b,c,n=0;
     cin>>a>>b>>c;
 
-    long long int n = 0;
-    REP(i,a,b) {
+    fill(is_prime1, is_prime1+MAXN, true);
+    fill(is_prime2, is_prime2+MAXN, true);
 
-        // [a,b) : [0]     [a]           [b-1]
-        long long int j;
-        for(j=2;j*j<=i;j++) {
-            if (i % j == 0) {
-                break;
-            }
-        }
-        if (j*j>i) {
-            n++;
-        }
+    is_prime1[0]=is_prime1[1]=false;
 
-        // int tmp = b/2; // 13/2=6.5=6,   12/2=6
-        // 37/2=18.5=18
+    for(ll i=2; i*i<=b; ++i) {
+        if (!is_prime1[i]) continue; //!!
+        for(ll j=i; j*j<=b; j+=i) {
+            is_prime1[j] = false;
+        }
+        for(ll j=ceil((double)a/i)*i-a; a+j<b; j+=i) {
+            is_prime2[j] = false;
+        }
     }
 
+    REP(i,b-a) if (is_prime2[i]) n++;
     cout << n << endl;
+
     return 0;
 }
