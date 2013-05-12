@@ -78,4 +78,5 @@ int main(){
 		printf("%.1lf\n",p);
 	}
 
+
 }
