@@ -46,7 +46,6 @@ bool check(double d1,double d2,double d3,double d4,double h,double r)
 {
 	if(r<=h){ if(d1<r||d2<r||d3<r||d4<r){ return false; } }
 	else    { if(len3(d1,r,h)||len3(d2,r,h)||len3(d3,r,h)||len3(d4,r,h)){ return false; } }
-
 	return true;
 }
 
@@ -61,12 +60,10 @@ int main()
 		cin>>S.X>>S.Y>>G.X>>G.Y;
 
 		double ans = INF;
-
 		rep(i,n)
 		{
 			double h;
 			P p1,p2;
-
 			cin>>p1.X>>p1.Y>>p2.X>>p2.Y>>h;
 			if(ans<EPS){ ans=0; continue; }
 			
