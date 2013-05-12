@@ -13,21 +13,19 @@ using namespace std;
 class SuperMan
 {
 private:
-	bool battled;	// 既に戦闘済みか
 	int pi, qi;
 public:	
-	SuperMan(){battled=false; pi=0; qi=0;}
-	void SwitchBattled(){battled=!battled;}
+	SuperMan(){pi=0; qi=0;}
 	void InputPi(int n){pi=n;}
 	void InputQi(int n){qi=n;}
-	bool OutputBattled(){return battled;}
 	int OutputPi(){return pi;}
-	int OutputQi(){return qi;}	
+	int OutputQi(){return qi;}
+	static bool CompareSuperManPredicate(SuperMan left, SuperMan right){return (left.qi > right.qi);}
 };
 
 int main()
 {
-	double max=0.000, p=0.000;
+	double p=0.000;
 	int N, k;
 	vector<SuperMan> superMen;
 
@@ -48,32 +46,30 @@ int main()
 			temp.InputQi(temp2);
 			superMen.push_back(temp);
 		}
-		// たくさんパワーもらえるやつ&&現状勝てる奴を選択
+
+		// 超人たちをQiの降順でソート
+		sort(superMen.begin(), superMen.end(), SuperMan::CompareSuperManPredicate);
+
+		// 超人たちを上から走査→倒せる奴にあたったら戦闘
 		while(1)
 		{
-			int candidate_i=-1, candidate_q=-1;
-			bool allBattled = true;	// 全員と戦闘したか
-			rep(N)
+			bool noMoreWeak = true;	// もう倒せる奴がいない
+			if(superMen.size() < 0) break;
+			vector<SuperMan>::iterator it=superMen.begin();
+			while(it!=superMen.end())
 			{
-				if(superMen[i].OutputBattled())
-					continue;
-				else
-					allBattled = false;
-				// 現状勝てる奴を列挙
-				if((double)superMen[i].OutputPi() <= p && superMen[i].OutputQi() > candidate_q)
+				// 勝てるかどうか比較
+				if((double)it->OutputPi() <= p)
 				{
-					candidate_i=i;
-					candidate_q=superMen[i].OutputQi();
+					// パワーアップ
+					p += (double)(it->OutputQi()) / (double)k;
+					superMen.erase(it);	// 倒した奴は削除
+					noMoreWeak = false;
+					break;
 				}
+				++it;
 			}
-			if(candidate_i < 0) break;
-			if(allBattled) break;
-			// 一番割の良いやつを倒してパワーアップ
-			superMen[candidate_i].SwitchBattled();
-			p += (double)candidate_q / (double)k;
-			/// debug
-			//cout << "battle Pi:" << superMen[candidate_i].OutputPi() << " Qi:" << candidate_q << " gain:" << (double)candidate_q/(double)k << endl;
-			///
+			if(noMoreWeak) break;
 			k++;
 		}
 		printf("%.1lf\n", p);
