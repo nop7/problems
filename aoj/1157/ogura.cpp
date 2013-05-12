@@ -49,7 +49,6 @@ bool check(double d1,double d2,double d3,double d4,double h,double r)
 	return true;
 }
 
-
 P S,G;
 
 int main()
@@ -58,8 +57,8 @@ int main()
 	while(cin>>n&&n)
 	{
 		cin>>S.X>>S.Y>>G.X>>G.Y;
-
 		double ans = INF;
+		
 		rep(i,n)
 		{
 			double h;
