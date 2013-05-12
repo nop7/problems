@@ -78,8 +78,4 @@ int main(){
 		printf("%.1lf\n",p);
 	}
 
-	fclose(fp_in);
-	fclose(fp_out);
-	
-
 }
