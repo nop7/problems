@@ -25,7 +25,7 @@ int main()
 
 		rep(i,n)
 		{
-			while(!Q1.empty()&&Q1.A<=p){ Q2.push(pdd(Q1.B,Q1.A)); Q1.pop(); }
+			while(!Q1.empty()&&Q1.A<=pp){ Q2.push(pdd(Q1.B,Q1.A)); Q1.pop(); }
 			if(Q2.empty()) break;
 
 			pp += Q2.A/double(i+1);
