@@ -17,7 +17,7 @@ int main()
 	dp[0]=0;
 
 	cin>>n;
-	rep(i,n)
+	rep(k,n)
 	{
 		cin>>s>>l>>p;
 		rep(i,MAXW) REP(j,s,l+1) if(i+j<MAXW&&dp[i]!=-1) dp[i+j]=max(dp[i+j],dp[i]+p);
