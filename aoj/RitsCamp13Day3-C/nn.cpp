@@ -13,61 +13,49 @@ using namespace std;
 #define rep(n) REP(i,n)
 #define EPS 1e-7
 #define INF 1e9
-#define PI (acos(-1))
-
-typedef long long unsigned int ll;
-typedef complex<double> P;
-#define X real()
-#define Y imag()
-
-typedef pair<double,double> pdd; // pair同士の比較では、firstが同じならsecondが比較される。
-#define A top().first // for priority_queue<pdd>
-#define B top().second
 
 const int MAXN=400;
 const int MAXM=800;
-
-typedef pair<int,int> Edge;
-vector<Edge> G[MAXN];
-bool visited[MAXN];
-
-void visit(int n, vector<int> &order) {
-    if(!visited[n]) {
-        visited[n] = true;
-        REP(i,G[n].size()) {
-            visit(G[n][i].first, order);
-        }
-        order.push_back(n);
-    }
-}
-
 int dp[MAXN];
 
-int main() {
+typedef pair<int,int> Edge;
+#define to first
+#define cost second
+vector<Edge> G[MAXN];
+
+bool visited[MAXN];
+
+void visit(int v, vector<int>& order) {
+    visited[v] = true;
+    REP(i,G[v].size()) if(!visited[G[v][i].to]) visit(G[v][i].to, order);
+    order.push_back(v);
+}
+
+void tsort(vector<int>& order) {
     fill(visited, visited+MAXN, false);
+    visit(0,order);
+    reverse(order.begin(), order.end());
+}
 
-    int n,m;
-    cin>>n>>m;
-
+int main() {
+    int n,m; cin>>n>>m;
     REP(i,m) {
-        int a,b,c;
-        cin>>a>>b>>c;
-        Edge tmp;
-        tmp.first=b;
-        tmp.second=c;
-        G[a].push_back(tmp);
+        int a,b,c; cin>>a>>b>>c;
+        G[a].push_back(Edge(b,c));
     }
 
-    vector<int> L;
-    visit(0,L);
-    reverse(L.begin(), L.end());
+    vector<int> order;
+    tsort(order);
 
     fill(dp,dp+n,-1);
     dp[0] = 0;
 
     REP(i,n) {
-        REP(j, G[L[i]].size()) {
-            dp[G[L[i]][j].first] = max(dp[G[L[i]][j].first], dp[L[i]] + G[L[i]][j].second);
+        int from = order[i];
+        REP(j, G[from].size()) {
+            int to = G[from][j].to;
+            int cost = G[from][j].cost;
+            dp[to] = max(dp[to], dp[from]+cost);
         }
     }
     cout << dp[n-1] << endl;
