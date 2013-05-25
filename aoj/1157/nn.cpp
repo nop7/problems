@@ -26,6 +26,7 @@ double cross(P a, P b) {
 
 // a1,a2を端点とする線分とb1,b2を端点とする線分の交差判定
 int is_intersected_ls(P a1, P a2, P b1, P b2) {
+    if(abs(cross(a2-a1,b2-b1))<EPS) return false; // 二つの線分が同一直線上にある場合、交差していないと判断
     return (cross(a2-a1, b1-a1)*cross(a2-a1, b2-a1) < EPS) &&
         (cross(b2-b1, a1-b1)*cross(b2-b1, a2-b1) < EPS);
 }
@@ -49,6 +50,8 @@ int main() {
         rep(N) {
             int minx,miny,maxx,maxy,h;
             cin>>minx>>miny>>maxx>>maxy>>h;
+            if (r < EPS) {r=0.0;continue;}
+
             P bv[4]; //block vertex
             // 0  _  3
             //   |_|
@@ -61,7 +64,7 @@ int main() {
             // 直方体の底面の4つの辺のいずれかが線分s-eと交わる
             bool flg=false;
             REP(i,4) REP(j,4) if(i<j&&j-i!=2) if(is_intersected_ls(s,e,bv[i],bv[j])) {r=0.0;i=j=4;flg=true;}
-            if (flg) break;
+            if (flg) continue; // breakするとcinの回数が不足する
 
             double dds[4], dde[4], ddd[4];
             int k=0;
@@ -78,7 +81,7 @@ int main() {
             // いま、直方体の底面と線分s-eの関係は、包含されるかされないかの2通り
             // その判定方法: 点sと直方体の底面の4辺との距離が以下の条件を満たすかどうか
             if(dds[0]<ddd[1]+EPS && dds[3]<ddd[1]+EPS
-               && dds[1]<ddd[0]+EPS && dds[2]<ddd[0]+EPS) {r=0.0;break;}
+               && dds[1]<ddd[0]+EPS && dds[2]<ddd[0]+EPS) {r=0.0;continue;} // breakするとcinの回数が不足する
 
             // 大玉を転がしていったときの、ブロックとの最小距離
             double distMin = INF;
