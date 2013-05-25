@@ -26,16 +26,15 @@ bool visit(int v)
 
 bool tsort(){ rep(i,G[i].size()){ if(!vs[i]&&!visit(i)) return false; } return true; }
 
-
 int main()
 {
 	int n,m,a,b,c;
 	cin>>n>>m;
 
+	vs.assign(n,0);
 	G.assign(n,vector<Edge>());
 	rep(i,m){ cin>>a>>b>>c; G[a].push_back(Edge(b,c)); }
 
-	vs.assign(n,0);
 	tsort();
 	reverse(order.begin(),order.end());
 
