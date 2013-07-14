@@ -5,7 +5,8 @@ set softtabstop=4
 set list
 set listchars=tab:^\_,trail:~,extends:.
 set incsearch
-
+set nobackup
+set noswapfile
 
 function! ZenkakuSpace()
   highlight ZenkakuSpace cterm=reverse ctermfg=DarkMagenta gui=reverse guifg=DarkMagenta
