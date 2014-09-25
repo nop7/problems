@@ -1,6 +1,13 @@
+scriptencoding utf-8
+set encoding=utf-8
+
 if has('vim_starting')
   set nocompatible
-  set runtimepath+=~/vimfiles/bundle/neobundle.vim/
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+
+  if has('win32')
+    set runtimepath+=~/vimfiles/bundle/neobundle.vim/
+  endif
 endif
 
 filetype off
@@ -10,7 +17,12 @@ filetype indent off
 " =============================================================================
 " NeoBundle
 " =============================================================================
-call neobundle#begin(expand('~/vimfiles/bundle/'))
+if has('win32')
+  call neobundle#begin(expand('~/vimfiles/bundle/'))
+else
+  call neobundle#begin(expand('~/.vim/bundle/'))
+endif
+
 NeoBundleFetch 'Shougo/neobundle.vim'
 if !has('win32')
   NeoBundle 'Shougo/vimproc', {
@@ -349,4 +361,3 @@ filetype on
 filetype plugin on
 filetype indent on
 syntax on
-
