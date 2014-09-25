@@ -33,7 +33,10 @@ NeoBundle 'thinca/vim-ref'          " クイックリファレンス閲覧
 NeoBundle 'w0ng/vim-hybrid'         " カラースキーム
 NeoBundle 'Shougo/unite-outline'    " コード中のクラスの概要
 NeoBundle 'sgur/unite-everything'   " デスクトップ検索
-NeoBundle 'scrooloose/syntastic'    " 静的コード解析
+" NeoBundle 'scrooloose/syntastic'    " 静的コード解析
+NeoBundle 'osyo-manga/vim-watchdogs' " 静的コード解析(非同期)
+NeoBundle 'dannyob/quickfixstatus'  " quickfixをコマンドウィンドウに表示
+NeoBundle 'KazuakiM/vim-qfsigns'    " quickfixをsign領域に表示
 NeoBundle 'koron/codic-vim'         " 英和辞書(補完にも使う)
 NeoBundle 'rhysd/unite-codic.vim'   " uniteで英和辞書を使う
 NeoBundle 'tpope/vim-rails'         " rails
@@ -180,28 +183,35 @@ call quickrun#module#register(shabadou#make_quickrun_hook_anim(
 
 " エラーならquickfix, 成功ならバッファに表示
 let g:quickrun_config = {
-\   "_" : {
-\       "runner" : "vimproc",
-\       "runner/vimproc/updatetime" : 40,
-\       "hook/santi_pinch/enable" : 1,
-\       "hook/santi_pinch/wait" : 30,
-\       "outputter/error/error" : "quickfix",
-\       "outputter/error/success" : "buffer",
-\       "outputter" : "error",
-\       "hook/quickfix_replate_tempname_to_bufnr/enable_exit" : 1,
-\       "hook/quickfix_replate_tempname_to_bufnr/priority_exit" : -10,
-\   },
-\   'cpp/vc': {
-\   'command': 'cl',
-\   'exec': ['%c %o %s /nologo /Fo%s:p:r.obj /Fe%s:p:r.exe',
+\  "_" : {
+\    "runner": "vimproc",
+\    "runner/vimproc/updatetime": 40,
+\    "hook/santi_pinch/enable": 1,
+\    "outputter": "multi:buffer:quickfix",
+\    "hook/quickfix_replate_tempname_to_bufnr/enable_exit": 1,
+\    "hook/quickfix_replate_tempname_to_bufnr/priority_exit": -10,
+\    "hook/close_quickfix/enable_success": 1,
+\    "hook/close_quickfix/enable_hook_loaded": 1,
+\  },
+\  'cpp/vc': {
+\    'command': 'cl',
+\    'exec': ['%c %o %s /nologo /Fo%s:p:r.obj /Fe%s:p:r.exe',
 \            '%s:p:r.exe %a'],
-\   'tempfile': '%{tempname()}.cpp',
-\   'hook/sweep/files': ['%S:p:r.exe', '%S:p:r.obj'],
-\ },
+\    'tempfile': '%{tempname()}.cpp',
+\    'hook/sweep/files': ['%S:p:r.exe', '%S:p:r.obj'],
+\  },
 \  "msbuild" : {
 \    "command": "search_and_msbuild.bat",
 \    "exec": "%c %o %s:p:r",
 \    "cmdopt": "",
+\  },
+\  'watchdogs_checker/_' : {
+\    'outputter/quickfix/open_cmd' : '',
+\    'hook/qfsigns_update/enable_exit':   1,
+\    'hook/qfsigns_update/priority_exit': 3,
+\  },
+\  "ruby/watchdogs_checker" : {
+\    "type" : "watchdogs_checker/rubocop"
 \  },
 \}
 
@@ -213,9 +223,18 @@ endif
 " <C-c>でプログラムの強制終了
 nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
 
+" =============================================================================
+" watchdogs
+" =============================================================================
+call watchdogs#setup(g:quickrun_config)
+
+let g:watchdogs_check_BufWritePost_enable = 1
+
+let g:qfsigns#Config = {'id': '5050', 'name': 'QFError',}
+execute 'sign define '.get(g:qfsigns#Config,'name').' texthl=Error text=>>'
 
 " =============================================================================
-" ref 
+" ref
 " =============================================================================
 let g:ref_refe_encoding = "UTF-8"
 " + でカーソル下の単語のリファレンスを開く
@@ -268,7 +287,7 @@ set grepprg=pt\ --nogroup
 " syntasitc
 " =============================================================================
 " 保存の度にrubyのコーディングスタイルが正しいかチェックする
-let g:syntastic_ruby_checkers = ['rubocop']
+" let g:syntastic_ruby_checkers = ['rubocop']
 
 
 " =============================================================================
