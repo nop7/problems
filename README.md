@@ -11,5 +11,5 @@ problemsプロジェクトでは、競技プログラミングの知識の集積
 -- AOJで解いたやつ
 * original/
 -- オリジナル問題
-* setting/
+* settings/
 -- 設定集
