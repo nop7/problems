@@ -18,6 +18,7 @@ endif
 filetype off
 filetype plugin off
 filetype indent off
+syntax off
 
 " =============================================================================
 " NeoBundle
@@ -39,6 +40,8 @@ if !has('win32')
 \   },
 \  }
 end
+NeoBundle 'chriskempson/tomorrow-theme' " カラースキーム
+NeoBundle 'w0ng/vim-hybrid'         " カラースキーム
 NeoBundle 'Shougo/unite.vim'        " 検索インタフェース
 NeoBundle 'Shougo/neomru.vim'       " 履歴
 NeoBundle 'Shougo/neocomplete.vim'  " 補完
@@ -48,7 +51,6 @@ NeoBundle 'itchyny/lightline.vim'   " 綺麗なステータスライン
 NeoBundle 'thinca/vim-quickrun'     " バッファのコードを実行
 NeoBundle 'osyo-manga/shabadou.vim' " QuickRunの拡張
 NeoBundle 'thinca/vim-ref'          " クイックリファレンス閲覧
-NeoBundle 'w0ng/vim-hybrid'         " カラースキーム
 NeoBundle 'Shougo/unite-outline'    " コード中のクラスの概要
 NeoBundle 'sgur/unite-everything'   " デスクトップ検索
 NeoBundle 'osyo-manga/vim-watchdogs' " 静的コード解析(非同期)
@@ -393,6 +395,19 @@ endif
 filetype on
 filetype plugin on
 filetype indent on
-syntax on
 
-colorscheme hybrid
+" カラースキーム
+let scheme = 'hybrid'
+augroup guicolorscheme
+  autocmd!
+  execute 'autocmd GUIEnter * colorscheme' scheme
+augroup END
+execute 'colorscheme' scheme
+
+" 行番号の色を設定
+" hi LineNr ctermbg=0 ctermfg=0
+hi CursorLineNr ctermbg=4 ctermfg=0
+set cursorline
+hi clear CursorLine
+
+syntax on
