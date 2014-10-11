@@ -1,5 +1,9 @@
 scriptencoding utf-8
 set encoding=utf-8
+set fileencoding=utf-8                                 " 基本文字コード
+set fileencodings=utf-8,iso-2022-jp,cp932,sjis,euc-jp  " 文字コード自動判別(優先順)
+set fileformat=unix           " 基本ファイルフォーマット
+set fileformats=unix,mac,dos  " ファイルフォーマット自動判別(優先順)
 
 if has('vim_starting')
   set nocompatible
@@ -86,11 +90,15 @@ set showcmd             " 常にステータス行を表示する
 set clipboard=unnamed   " クリップボード共有
 set showmatch           " 対応する括弧の表示
 set hlsearch            " 検索結果のハイライト
+set history=100         " ヒストリの最大
+set shellslash          " Windowsで/
 set list                " 不可視文字描画
 set listchars=tab:^\_,trail:~,extends:.
 set backspace=indent,eol,start  " インデントを消せるようにする
 set wildmenu
 set wildmode=list,longest:full
+set cursorline
+hi clear CursorLine
 
 " grepしたらquickfixを表示
 autocmd QuickFixCmdPost *grep* cwindow
@@ -103,7 +111,13 @@ if $TERM == "xterm"
   set shell=bash
 endif
 
-set t_Co=256
+if !has('gui_running')
+  set t_Co=256
+end
+
+" カラースキーム
+let g:hybrid_use_Xresources = 1
+colorscheme hybrid
 
 " =============================================================================
 " keymapping
@@ -395,19 +409,5 @@ endif
 filetype on
 filetype plugin on
 filetype indent on
-
-" カラースキーム
-let scheme = 'hybrid'
-augroup guicolorscheme
-  autocmd!
-  execute 'autocmd ColorScheme * colorscheme' scheme
-augroup END
-execute 'colorscheme' scheme
-
-" 行番号の色を設定
-" hi LineNr ctermbg=0 ctermfg=0
-hi CursorLineNr ctermbg=4 ctermfg=0
-set cursorline
-hi clear CursorLine
-
 syntax on
+
